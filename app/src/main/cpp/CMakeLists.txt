@@ -1,10 +1,7 @@
 cmake_minimum_required(VERSION 3.22.1)
 project("dfroot-exploit")
 
-# Указываем CMake искать заголовочные файлы и ресурсы прямо в папке cpp
-include_directories(${CMAKE_CURRENT_SOURCE_DIR})
-
-# Добавляем все исходные файлы эксплойта
+# Добавляем библиотеку
 add_library(
         dfroot-exploit
         SHARED
@@ -14,6 +11,10 @@ add_library(
         splicehelper.c
 )
 
+# САМОЕ ВАЖНОЕ: говорим ассемблеру (-Wa), где искать файлы для .incbin (папка ko и файлы в cpp)
+target_compile_options(dfroot-exploit PRIVATE "-Wa,-I${CMAKE_CURRENT_SOURCE_DIR}")
+
+# Подключаем системную библиотеку логов Android
 find_library(
         log-lib
         log
